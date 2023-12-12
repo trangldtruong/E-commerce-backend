@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
     res.json(categoryData);
   });
   // be sure to include its associated Products
+
 });
 
 router.get('/:id', (req, res) => {
@@ -60,7 +61,7 @@ router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
   Category.destroy({
     where: {
-      category_id: 
+      category_id: req.params.id
     },
 
   })
