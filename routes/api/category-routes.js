@@ -19,8 +19,8 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const categoryData = await Category.findByPk(req.params.id, {
-    include: [{}]
-  })
+    include: [{ model: Product }]
+ })
 
   if (!categoryData) {
       res.status(404).json({ message: 'No category found with this id!' });
@@ -34,35 +34,37 @@ router.get('/:id', async (req, res) => {
 });
 
   
-router.post('/', async (req, res) => {
-  // create a new category
-  try categoryData = await Category.create({
-  })
-  .then((newCategory) => {
-    // Send the newly created row as a JSON object
-    res.json(categoryData);
-  })
-  .catch((err) => {
-    res.json(err);
-  });
-});
+// router.post('/', async (req, res) => {
+//   // create a new category
+//   try {
+//     const categoryData = await Category.create(req.params.id, {
+//   })
+//   .then((categoryData) => {
+//     // Send the newly created row as a JSON object
+//     res.json(categoryData);
+//   })
+// } catch((err) => {
+//     res.json(err);
+//   });
+// }
+// );
 
-router.put('/:id', (req, res) => {
-  // update a category by its `id` value
-  try {
-    const categoryData = await Category.update(
-    {
-      where: {
-        category_id: req.params.id
-      },
-    }
-  )
-  .then((updatedCategory) => {
-    // Sends the updated book as a json response
-    res.json(updatedCategory);
-  })
-  .catch((err) => res.json(err));
-});
+// router.put('/:id', (req, res) => {
+//   // update a category by its `id` value
+//   try {
+//     const categoryData = await Category.update(
+//     {
+//       where: {
+//         category_id: req.params.id
+//       },
+//     }
+//   )
+//   .then((updatedCategory) => {
+//     // Sends the updated book as a json response
+//     res.json(updatedCategory);
+//   })
+//   .catch((err) => res.json(err));
+// });
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
