@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const categoryData = await Category.findByPk(req.params.id, {
-    include: [{ model: Product }]
+    include: [Product]
  })
 
   if (!categoryData) {
@@ -34,37 +34,40 @@ router.get('/:id', async (req, res) => {
 });
 
   
-// router.post('/', async (req, res) => {
-//   // create a new category
-//   try {
-//     const categoryData = await Category.create(req.params.id, {
-//   })
-//   .then((categoryData) => {
-//     // Send the newly created row as a JSON object
-//     res.json(categoryData);
-//   })
-// } catch((err) => {
-//     res.json(err);
-//   });
-// }
-// );
+ router.post('/', async (req, res) => {
+   // create a new category
+   try {
+     const categoryData = await Category.create(req.body);
+      // Send the newly created row as a JSON object
+     res.status(200).json(categoryData);
+ } catch (err) {
+     res.status(400).json(err);
+   }
+  });
+ 
 
-// router.put('/:id', (req, res) => {
-//   // update a category by its `id` value
-//   try {
-//     const categoryData = await Category.update(
-//     {
-//       where: {
-//         category_id: req.params.id
-//       },
-//     }
-//   )
-//   .then((updatedCategory) => {
-//     // Sends the updated book as a json response
-//     res.json(updatedCategory);
-//   })
-//   .catch((err) => res.json(err));
-// });
+ router.put('/:id', (req, res) => {
+   // update a category by its `id` value
+  Category.update(
+     { id: req.body.id,
+       category_name: req.body.category_name
+      },
+    {
+      where: {
+       category_id: req.params.category_id,
+      },
+    }
+  )
+    .then((updatedCategory) => {
+     // Sends the updated book as a json response
+     res.json(updatedCategory);
+   })
+   .catch((err) => {
+    console.log(err);
+    res.json(err);
+   });
+  }); 
+ 
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
@@ -72,7 +75,6 @@ router.delete('/:id', (req, res) => {
     where: {
       category_id: req.params.id
     },
-
   })
   .then((deletedCategory) => {
     res.json(deletedCategory);
